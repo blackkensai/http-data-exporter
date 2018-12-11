@@ -82,7 +82,6 @@ func do_fetch_data() map[string]float64 {
 }
 
 func update_data() {
-    fmt.Println(time.Now().String())
     data := do_fetch_data()
     for k, v := range data {
         k = translate_prometheus_key(k)
@@ -106,14 +105,12 @@ func init_prometheus() {
     for k, _ := range data {
         mainkey := translate_prometheus_key(k)
         k = translate_prometheus_subkey(k)
-        fmt.Println(k)
         var gauge = prometheus.NewGauge(prometheus.GaugeOpts{
             Name: prometheus.BuildFQName(*prefix, "", k),
             Help: k,
         })
         monitors[mainkey] = gauge
         prometheus.MustRegister(gauge)
-        fmt.Println(gauge.Desc())
     }
 }
 
